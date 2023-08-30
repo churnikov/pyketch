@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+     <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.2.1.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.2.1/dist/panel.min.js"></script>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2022.12.1/pyscript.css" />
+    <!-- <script defer src="https://pyscript.net/releases/2022.12.1/pyscript.js"></script> -->
+{% endblock %}
+  </head>
+	{% block content %}
+	    <py-config type="toml">
+       packages = [
+          "https://cdn.holoviz.org/panel/1.2.1/dist/wheels/bokeh-3.2.1-py3-none-any.whl",
+          "https://cdn.holoviz.org/panel/1.2.1/dist/wheels/panel-1.2.1-py3-none-any.whl"
+       ]
+    </py-config>
+		<iframe id="ifKetcher" src="{% static 'ketcher/index.html' %}" width="800" height="600"></iframe>
+		
+    <div id="simple_app"></div>
+	<button id="set-mol-btn">set molecule</button>
+  <button id="get-mol-btn">get molecule</button>
+  <button id="predict-btn">predict</button>
+  <p id="mol-placeholder"></p>
+
+    <py-script>
+import panel as pn
+import js
+from pyodide.ffi import create_proxy
+
+async def onclick():
+	ketcher = js.document.getElementById("ifKetcher").contentWindow.ketcher
+	smiles = await ketcher.getSmiles()
+	mol_placeholder = js.document.getElementById("mol-placeholder")
+	mol_placeholder.innerHTML = smiles
+	print(smiles)
+
+pn.extension(sizing_mode="stretch_width")
+
+slider = pn.widgets.FloatSlider(start=0, end=10, name='Amplitude')
+
+async def callback(new):
+	await onclick()
+	return f'Amplitude is: {new}'
+
+pn.Row(slider, pn.bind(callback, slider)).servable(target='simple_app');
+    </py-script>
+  
+	{% endblock %}

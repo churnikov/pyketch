@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pyketch"
+version = "0.1.0"
+description = ""
+authors = ["Nikita Churikov <nikita@chur.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dash = "^2.11.1"
+pandas = "^2.0.3"
+django = "^4.2.3"
+panel = "^1.2.0"
+hvplot = "^0.8.4"
+jupyterlite-core = "^0.1.1"
+jupyterlite-pyodide-kernel = "^0.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  {% csrf_token %}
+	<py-repl>import js</py-repl>
+	<iframe id="ifKetcher" src="{% static 'ketcher/index.html' %}" width="800" height="600"></iframe>
+  <button id="set-mol-btn">set molecule</button>
+  <button id="get-mol-btn">get molecule</button>
+  <button id="predict-btn">predict</button>
+  <p id="mol-placeholder"></p>
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<py-script src="{% static 'pyscripts/set_mol.py' %}"></py-script>
+<py-script src="{% static 'pyscripts/get_mol.py' %}"></py-script>
+<py-script src="{% static 'pyscripts/script.py' %}"></py-script>
+{% endblock extra_scripts %}
